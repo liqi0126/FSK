@@ -12,10 +12,14 @@ signal = filter(hd,signal);
 
 window = ceil(Fs * duration);
 
+
 [~, n] = size(signal);%获取数据的长度值
-if n == 1
-    [n, ~] = size(signal);
-end
+
+figure; 
+plot(signal);
+hold on;
+n
+window
 
 fft_diff = zeros(1, n);
 for i = 1:1:n-window
@@ -32,6 +36,7 @@ for i = 1:1:n-window
     fft_diff(i) = y(index_impulse1) - y(index_impulse0);
 end
 
+plot(fft_diff);
 
 % 找到第一个波峰
 total_max = max(abs(fft_diff));

@@ -1,6 +1,6 @@
-c = str2code('hello world');
-signals = encoder(c, [1 0 1 0]);
-code = decode(signals', [1 0 1 0]);
+c = str2code('hel');
+signals = encoder(c, [1 0 1 0 1 0 1 0]);
+code = decode(signals, [1 0 1 0 1 0 1 0]);
 function signals = encoder(code, preamble_code)
     % constants
     fs = 48000;
@@ -11,7 +11,8 @@ function signals = encoder(code, preamble_code)
     % seperate & encode
     signals = [];
     len = length(code);
-    temp_code = zeros(1, length(preamble_code) + 16 + 64);
+    pre_len = length(preamble_code);
+    temp_code = zeros(1, pre_len + 16 + 64);
     while len > 0
         % each package size <= 64
         if len > 64
@@ -25,8 +26,8 @@ function signals = encoder(code, preamble_code)
             len = 0;
         end
         
-        temp_code(1:length(preamble_code)) = preamble_code;
-        temp_code(9:24) = [zeros(1, 8), uint8tobinary(temp_len)];
+        temp_code(1: pre_len) = preamble_code;
+        temp_code(pre_len+1: pre_len+16) = [zeros(1, 8), uint8tobinary(temp_len)];
 
         temp_signal = my_FSK_mod(temp_code, fs, duration, f0, f1);
         %signals = [signals; temp_signal];

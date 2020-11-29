@@ -20,7 +20,7 @@ function code = decode(signal, preamble_code)
     i = 1;
     while i < signal_length - preamble_length
         corr = corrcoef(preamble_standard, signal(i : i+preamble_length-1));
-        if corr > 0.8
+        if corr > 0.95
             i
             payload_length = decode_header(signal(i: i+pre_length-1), fs, duration, f0, f1);
             start_pos = i + pre_length+1;

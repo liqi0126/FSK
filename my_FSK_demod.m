@@ -5,6 +5,7 @@ function [code, fft_diff, start, window] = my_FSK_demod(signal, Fs, duration, f0
 % f0: freqency for code 0
 % f1: freqency for code 1
 
+signal = [zeros(1, 500), signal];
 
 hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, f0-500, f1+500, Fs),'butter');
 %用定义好的带通滤波器对data进行滤波

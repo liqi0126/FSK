@@ -5,9 +5,6 @@ function signal = my_FSK_mod(code, Fs, duration, f0, f1)
 % f0: freqency for code 0
 % f1: freqency for code 1
 
-% pend 10 '0';
-code = [code, zeros(1,10)];
-
 cLen = length(code);
 
 window = ceil(Fs * duration);

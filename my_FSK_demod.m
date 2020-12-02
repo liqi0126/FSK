@@ -5,18 +5,15 @@ function [code, fft_diff, start, window] = my_FSK_demod(signal, Fs, duration, f0
 % f0: freqency for code 0
 % f1: freqency for code 1
 
-signal = [zeros(1, 500), signal];
+
+window = ceil(Fs * duration);
+signal = [zeros(1, window), signal];
 
 hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, f0-500, f1+500, Fs),'butter');
 %用定义好的带通滤波器对data进行滤波
 signal = filter(hd,signal);
 
-window = ceil(Fs * duration);
-
-[~, n] = size(signal);%获取数据的长度值
-if n == 1
-    [n, ~] = size(signal);
-end
+n = length(signal); %获取数据的长度值
 
 fft_diff = zeros(1, n);
 for i = 1:1:n-window
@@ -56,10 +53,16 @@ code_num = ceil((n - start) / window);
 code = -1 * ones(1, code_num);
 cursor = start;
 for i=1:code_num
-   if fft_diff(cursor) > high/15
-       code(i) = 1;
-   elseif fft_diff(cursor) < -low/15
-       code(i) = 0;
+   range = 5;
+   cursor_start = cursor - range;
+   cursor_end = cursor + range;
+   if cursor_end > n
+      cursor_end = n; 
+   end
+   if max(fft_diff(cursor_start:cursor_end)) > high/15
+        code(i) = 1;
+   elseif min(fft_diff(cursor_start:cursor_end)) < -low/15
+        code(i) = 0;
    end
    cursor = cursor + window;
 end

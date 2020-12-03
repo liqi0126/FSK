@@ -12,7 +12,6 @@ function code = decode(signal, preamble_code)
 
     % generate standard preamble
     preamble_standard = my_FSK_mod(preamble_code, fs, duration, f0, f1);
-    preamble_standard = preamble_standard(1: length(preamble_standard) - 10*bit_length); % 去掉末尾的补零
     preamble_length = length(preamble_standard);
     
     code = [];
@@ -20,23 +19,25 @@ function code = decode(signal, preamble_code)
     i = 1;
     while i < signal_length - preamble_length
         corr = corrcoef(preamble_standard, signal(i : i+preamble_length-1));
-        if corr > 0.95
-            i
+        if corr > 0.9
+            %i
             payload_length = decode_header(signal(i: i+pre_length-1), fs, duration, f0, f1);
-            start_pos = i + pre_length+1;
-            end_pos = start_pos + payload_length*bit_length - 1;
-            [payload_code, fft_diff, start, window] = my_FSK_demod(signal(start_pos: end_pos), fs, duration, f0, f1);
-            code = [code, payload_code];
-            %code = payload_code;
+            %payload_length
+            start_pos = i + pre_length;
+            end_pos = start_pos - 1 + payload_length*bit_length;
+            [payload_code, fft_diff, start, window] = my_FSK_demod(signal(i: end_pos), fs, duration, f0, f1);
+            %size(payload_code)
+            code = [code, payload_code(25:length(payload_code))];
+            code(length(code)-8:length(code));
             i = end_pos;
         end
         i = i + 1;
     end
+    %code
 end
 
 function payload_length = decode_header(signal, Fs, duration, f0, f1)
     [code, fft_diff, start, window] = my_FSK_demod(signal, Fs, duration, f0, f1);
-    code
     code = code(17:24);
     payload_length = 0;
     x = 1;

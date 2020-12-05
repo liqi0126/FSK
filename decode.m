@@ -12,7 +12,6 @@ function code = decode(signal, preamble_code)
 
     % generate standard preamble
     preamble_standard = my_FSK_mod(preamble_code, fs, duration, f0, f1);
-    preamble_standard = preamble_standard(1: length(preamble_standard) - 10*bit_length); % 去掉末尾的补零
     preamble_length = length(preamble_standard);
     
     code = [];

@@ -5,13 +5,13 @@ code = code';
 
 
 
-f0 = 10500;
-f1 = 12500;
-duration = 10*pi/f0;
-
-% f0 = 4500;
-% f1 = 8500;
+% f0 = 10500;
+% f1 = 12500;
 % duration = 10*pi/f0;
+
+f0 = 4000;
+f1 = 8000;
+duration = 0.025;
 
 [signal, Fs] = audioread('sound.wav');
 signal = signal(:,1).';

@@ -26,7 +26,12 @@ end
 
 recon_code = -1 * ones(1, cLen);
 for i = 1:cLen
-    y = fft(signal((i-1)*window+(1:window)));
+    sig_begin = (i-1)*window + 1;
+    sig_end = i*window;
+    if sig_end > n
+       sig_end = n;
+    end
+    y = fft(signal(sig_begin:sig_end));
     y = abs(y);
     [~, impulse_pos] = max(y);
     [~, code] = min(abs(code_impulse_pos - impulse_pos));

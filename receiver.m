@@ -10,7 +10,7 @@ code = code';
 % duration = 10*pi/f0;
 
 f0 = 4000;
-f1 = 8000;
+f1 = 6000;
 duration = 0.025;
 
 [signal, Fs] = audioread('sound.wav');

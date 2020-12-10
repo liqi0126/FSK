@@ -1,4 +1,4 @@
-function signal = my_FSK_mod(code, Fs, duration, f0, f1)
+function signal = my_2FSK_mod(code, Fs, duration, f0, f1)
 % code: squence to encode
 % Fs: sampling frequence
 % duration: hold-on time

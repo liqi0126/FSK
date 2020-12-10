@@ -1,21 +1,27 @@
-function [code, fft_diff, start, window] = my_FSK_demod(signal, Fs, duration, f0, f1)
+function [code, fft_diff, fft_0, fft_1, start, window] = my_FSK_demod(signal, Fs, duration, f0, f1)
 % code: squence to encode
 % Fs: sampling frequence
 % duration: hold-on time
 % f0: freqency for code 0
 % f1: freqency for code 1
 
+[~, n] = size(signal);
+if n == 1
+    signal = signal';
+end
 
 window = ceil(Fs * duration);
 signal = [zeros(1, window), signal];
 
-hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, f0-500, f1+500, Fs),'butter');
+% hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, f0-500, f1+500, Fs),'butter');
 %用定义好的带通滤波器对data进行滤波
-signal = filter(hd,signal);
+% signal = filter(hd,signal);
 
 n = length(signal); %获取数据的长度值
 
 fft_diff = zeros(1, n);
+fft_0 = zeros(1, n);
+fft_1 = zeros(1, n);
 for i = 1:1:n-window
     %对从当前点开始的window长度的数据进行傅里叶变换
     y = fft(signal(i:i+window-1));
@@ -28,6 +34,8 @@ for i = 1:1:n-window
 %     impulse_fft1 = max(y(index_impulse1-2:index_impulse1+2));
 %     fft_diff(i) = impulse_fft1 - impulse_fft0;
     fft_diff(i) = y(index_impulse1) - y(index_impulse0);
+    fft_0(i) = y(index_impulse0);
+    fft_1(i) = y(index_impulse1);
 end
 
 

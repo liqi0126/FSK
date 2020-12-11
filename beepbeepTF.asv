@@ -25,7 +25,7 @@ function beepbeepTF(app)
             end
         elseif app.beepbeep_mode == 3
             if app.data_recv ~= -1
-                app.distEditField.Value = 0.5 * 340 * ((app.tA3 - app.tA1) - app.data_recv) + app.dA + app.dB;
+                app.distEditField.Value = 0.5 * 340 * ((app.tA3 - app.tA1) - app.data_recv) / app.Fs + app.dA + app.dB;
                 app.beepbeep_mode = 1;
             end
         end

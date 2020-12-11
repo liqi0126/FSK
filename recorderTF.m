@@ -10,20 +10,19 @@ function []= recorderTF(app)
                 data = myRecording(end-32000:end);
                 app.pStart = position(data, app.preamble_code, app.f0, app.f1, app.duration);
                 if app.pStart ~= -1
-                    app.mode = 2;
+                    app.mode = 2
                 end
             elseif app.mode == 2    % 寻找包长度
                 if length(myRecording) - app.pStart > 36400
                     app.pLen = decode_header(myRecording(app.pStart, end), app.Fs, app.duration, app.f0, app.f1, app.preamble_bit_num);
-                    app.mode = 3;
+                    app.mode = 3
                 end
             elseif app.mode == 3    % 接收包
                 if length(myRecording) - app.pStart > app.pLen
                     code = my_FSK_demod(myRecording(app.pStart,app.pStart+app.pLen), app.Fs, app.duration, app.f0, app.f1 );
                     app.outStr = [app.outStr int2str(code)];
                     app.recvInfo.Value = app.outStr;
-                    
-                    app.mode = 1;
+                    app.mode = 1
                 end
             end
                 

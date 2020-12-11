@@ -10,7 +10,7 @@ while(1)
     end
 end
 pause(1);
-app.data_recv = fread(t_server, t_server.ByteAvailable);
+app.data_recv = fread(t_server, t_server.ByteAvailable)
 fclose(t_server);
 end
 

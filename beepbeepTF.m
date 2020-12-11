@@ -12,21 +12,26 @@ function beepbeepTF(app)
     
     if app.beepbeep_type == 'A'
         if app.beepbeep_mode == 1
-            start_pos = position(myRecording(end-30000,end), app.chirp, app.f0, app.f1, app.duration);
+            start_pos = position(myRecording(end-30000,end), app.chirp_signal, app.chirp_f0, app.chirp_f1, app.chirp_duration);
             if start_pos ~= -1
                app.tA1 = start_pos;
                app.beepbeep_mode = 2;
+               app.mode2Lamp.Color = [0 1 0];
             end
         elseif app.beepbeep_mode == 2
-            start_pos = position(myRecording(end-30000,end), app.chirp, app.f0, app.f1, app.duration);
+            start_pos = position(myRecording(end-30000,end), app.chirp_signal, app.chirp_f0, app.chirp_f1, app.chirp_duration);
             if start_pos ~= -1
                app.tA3 = start_pos;
                app.beepbeep_mode = 3;
+               app.mode3Lamp.Color = [0 1 0];
             end
         elseif app.beepbeep_mode == 3
             if app.data_recv ~= -1
-                app.distEditField.Value = 0.5 * 340 * ((app.tA3 - app.tA1) - app.data_recv) + app.dA + app.dB;
+                app.distEditField.Value = 0.5 * 340 * ((app.tA3 - app.tA1) - app.data_recv) / app.Fs + app.dA + app.dB;
                 app.beepbeep_mode = 1;
+                
+                app.mode2Lamp.Color = [1 0 0];
+                app.mode3Lamp.Color = [1 0 0];
             end
         end
     elseif app.beepbeep_type == 'B'
@@ -35,6 +40,7 @@ function beepbeepTF(app)
             if start_pos ~= -1
                play_chirp;
                app.beepbeep_mode = 2;
+               app.mode2Lamp.Color = [0 1 0];
             end
         elseif app.beepbeep_mode == 2
             start_pos = position(myRecording(end-30000,end), app.chirp, app.f0, app.f1, app.duration);
@@ -42,6 +48,7 @@ function beepbeepTF(app)
                app.tB3 = start_pos;
                tcp_client(app, app.tB3 - app.tB1);
                app.beepbeep_mode = 1;
+               app.mode2Lamp.Color = [1 0 0];
             end
         end
     end

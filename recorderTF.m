@@ -19,7 +19,7 @@ function []= recorderTF(app)
                 end
             elseif app.mode == 3    % 接收包
                 if length(myRecording) - app.pStart > app.pLen
-                    code = my_FSK_demod(data, app.Fs, app.duration, app.f0, app.f1 );
+                    code = my_FSK_demod(myRecording(app.pStart,app.pStart+app.pLen), app.Fs, app.duration, app.f0, app.f1 );
                     app.outStr = [app.outStr int2str(code)];
                     app.recvInfo.Value = app.outStr;
                     

@@ -1,0 +1,12 @@
+function tcp_client(app, send_data, ip, port)
+%TCP_CLIENT 作为tcp客户端发送信息
+t_client = tcpip(ip, port, 'NetworkRole', 'client');
+t_client.OutputBuffersize = 1000000;
+fopen(t_client);
+
+pause(1);
+fwrite
+
+
+end
+

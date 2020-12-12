@@ -1,7 +1,7 @@
 function tcp_server(app)
 %TCP_SERVER 建立tcp/ip连接的主机
 %   此处显示详细说明
-t_server = tcpip('0.0.0.0', app.port, 'NetwordRole', 'server');
+t_server = tcpip('0.0.0.0', app.port, 'NetworkRole', 'server');
 fopen(t_server);
 while(1)
     if t_server.BytesAvailable > 0

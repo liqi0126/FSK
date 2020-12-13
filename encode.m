@@ -1,48 +1,39 @@
-c = str2code('hello worldhello cckkkttlesdfworldhello worlo');
-
-signals = encoder(c, [1 0 1 0 1 0 1 0]);
-code = decode(signals, [1 0 1 0 1 0 1 0]);
-code2str(code)
-
-function signals = encoder(code, preamble_code)
+function signals = encode(str, preamble_code)
     % constants
     fs = 48000;
-    f0 = 10500;
-    f1 = 12500;
-    duration = 10*pi/f0;
+    f0 = 4000;
+    f1 = 6000;
+    duration = 0.01;
+    window = ceil(fs * duration);
     
     % seperate & encode
+    code = str2code(str);
     signals = [];
     len = length(code);
     pre_len = length(preamble_code);
-    temp_code = zeros(1, pre_len + 16 + 255);
+    temp_code = zeros(1, pre_len + 8 + 255);
+    header_len = pre_len + 8;
     while len > 0
         % each package size <= 255
         if len > 255
-            temp_code(25:279) = code(1: 255);
+            temp_code(header_len+1:header_len+255) = code(1: 255);
             temp_len = 255;
             code = code(256:len);
             len = len - 255;
         else
-            temp_code(25:24+len) = code;
+            temp_code(header_len+1:header_len+len) = code;
             temp_len = len;
             len = 0;
         end
         
         temp_code(1: pre_len) = preamble_code;
-        temp_code(pre_len+1: pre_len+16) = [zeros(1, 8), uint8tobinary(temp_len)];
-
-        temp_signal = my_FSK_mod(temp_code(1: pre_len+16+temp_len), fs, duration, f0, f1);
-        window = ceil(fs * duration);
+        %temp_code(pre_len+1: pre_len+16) = [zeros(1, 8), uint8tobinary(temp_len)];
+        temp_code(pre_len+1: header_len) = uint8tobinary(temp_len);
+        temp_signal = my_2FSK_mod(temp_code(1: header_len+temp_len), fs, duration, f0, f1);
         
-        %fortest = my_FSK_demod(temp_signal(24*window:length(temp_signal)), fs, duration, f0,f1);
-        %fortest = my_FSK_demod(temp_signal, fs, duration, f0,f1);
-        %length(fortest)
-        %fortest(length(fortest)-8:length(fortest))
-        
-        signals = [signals, zeros(1, 200), temp_signal];
+        signals = [signals, zeros(1, 2*window), temp_signal];
     end
-    signals = [signals, zeros(1, 200)];
+    signals = [zeros(1, 2*window), signals, zeros(1, 10*window)];
 end
 
 function binary_code = uint8tobinary(num)

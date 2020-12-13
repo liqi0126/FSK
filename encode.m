@@ -31,9 +31,9 @@ function signals = encode(str, preamble_code)
         temp_code(pre_len+1: header_len) = uint8tobinary(temp_len);
         temp_signal = my_2FSK_mod(temp_code(1: header_len+temp_len), fs, duration, f0, f1);
         
-        signals = [signals, zeros(1, 2*window), temp_signal];
+        signals = [signals, zeros(1, 10*window), temp_signal];
     end
-    signals = [zeros(1, 2*window), signals, zeros(1, 10*window)];
+    signals = [zeros(1, 1*window), signals, zeros(1, 10*window)];
 end
 
 function binary_code = uint8tobinary(num)

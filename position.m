@@ -14,13 +14,17 @@ function start_pos = position(signal, preamble_signal, preamble_length)
     signal_length = length(signal);
     i = 1;
     start_pos = -1;
+    corrs  = [];
     while i < signal_length - preamble_length
         corr = corrcoef(preamble_signal, signal(i : i+preamble_length-1));
         corr = abs(corr(1,2));
-        if corr > 0.8
+        corrs = [corrs corr];
+        if corr > 0.4
             start_pos = i;
+            plot(corrs);
             return
         end
         i = i + 1;
     end
+    plot(corrs);
 end

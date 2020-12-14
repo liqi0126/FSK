@@ -1,6 +1,6 @@
 function start_pos = position(signal, preamble_signal, preamble_length)
     %用定义好的带通滤波器对data进行滤波
-    hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, 2500, 5500, fs),'butter');
+    hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, 2500, 5500, 48000),'butter');
     signal = filter(hd, signal);
     
     signal_length = length(signal);

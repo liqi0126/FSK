@@ -14,9 +14,11 @@ function start_pos = position(signal, preamble_signal, preamble_length)
         if corr > 0.2
             max_corr = corr;
             start_pos = i;
-            end_pos = min(i+240, signal_length - preamble_length);
+            end_pos = min(i+2400, signal_length - preamble_length);
             for j = i: end_pos
                 corr = corrcoef(preamble_signal, signal(j : j+preamble_length-1));
+                corr = abs(corr(1,2));
+                corrs = [corrs corr];
                 if corr > max_corr
                     max_corr = corr;
                     start_pos = j;

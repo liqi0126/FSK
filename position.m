@@ -19,8 +19,17 @@ function start_pos = position(signal, preamble_signal, preamble_length)
         corr = corrcoef(preamble_signal, signal(i : i+preamble_length-1));
         corr = abs(corr(1,2));
         corrs = [corrs corr];
-        if corr > 0.4
+        if corr > 0.25
+            max_corr = corr;
             start_pos = i;
+            end_pos = min(i+240, signal_length - preamble_length);
+            for j = i: end_pos
+                corr = corrcoef(preamble_signal, signal(j : j+preamble_length-1));
+                if corr > max_corr
+                    max_corr = corr;
+                    start_pos = j;
+                end
+            end
             plot(corrs);
             return
         end

@@ -1,15 +1,7 @@
 function start_pos = position(signal, preamble_signal, preamble_length)
-%     % constants
-%     fs = 48000;
-%     bit_length = ceil(fs * duration);
-%     preamble_bit_num = length(preamble_code);
-%     header_bit_num = 16;
-%     pre_bit_num = preamble_bit_num + header_bit_num;
-%     pre_length = pre_bit_num * bit_length;
-%     
-%     % generate standard preamble
-%     preamble_standard = my_2FSK_mod(preamble_code, fs, duration, f0, f1);
-%     preamble_length = length(preamble_standard);
+    %用定义好的带通滤波器对data进行滤波
+    hd = design(fdesign.bandpass('N,F3dB1,F3dB2',6, 2500, 5500, fs),'butter');
+    signal = filter(hd, signal);
     
     signal_length = length(signal);
     i = 1;
@@ -19,7 +11,7 @@ function start_pos = position(signal, preamble_signal, preamble_length)
         corr = corrcoef(preamble_signal, signal(i : i+preamble_length-1));
         corr = abs(corr(1,2));
         corrs = [corrs corr];
-        if corr > 0.25
+        if corr > 0.2
             max_corr = corr;
             start_pos = i;
             end_pos = min(i+240, signal_length - preamble_length);

@@ -11,7 +11,7 @@ function start_pos = position(signal, preamble_signal, preamble_length, f0, f1)
         corr = corrcoef(preamble_signal, signal(i : i+preamble_length-1));
         corr = abs(corr(1,2));
         corrs = [corrs corr];
-        if corr > 0.2
+        if corr > 0.4
             max_corr = corr;
             start_pos = i;
             end_pos = min(i+2400, signal_length - preamble_length);

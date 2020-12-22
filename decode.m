@@ -72,7 +72,7 @@ function str = decode(signal, preamble_code)
                 if end_pos > length(signal)
                     break
                 end
-                payload_code = my_kFSK_demod(signal(i: end_pos), fs, duration, [f0 f1]);
+                payload_code = my_2FSK_demod(signal(i: end_pos), fs, duration, f0, f1);
                 %size(payload_code)
                 temp_code = payload_code(pre_bit_num+1:length(payload_code));
                 temp_code_len = length(temp_code);
@@ -179,7 +179,7 @@ function str = code2str(code)
 end
 
 function payload_length = decode_header(signal, Fs, duration, f0, f1, preamble_bit_num)
-    code = my_kFSK_demod(signal, Fs, duration, [f0 f1]);
+    code = my_2FSK_demod(signal, Fs, duration, f0, f1);
     code = code(preamble_bit_num+1:length(code));
     payload_length = 0;
     x = 1;

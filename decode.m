@@ -1,8 +1,8 @@
 function str = decode(signal, preamble_code)
     % constants
     fs = 48000;
-    f0 = 4000;
-    f1 = 6000;
+    f0 = 6000;
+    f1 = 8000;
     duration = 0.01;
     bit_length = ceil(fs * duration);
     preamble_bit_num = length(preamble_code);

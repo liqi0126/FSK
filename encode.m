@@ -1,8 +1,8 @@
 function signals = encode(str, preamble_code)
     % constants
     fs = 48000;
-    f0 = 4000;
-    f1 = 6000;
+    f0 = 6000;
+    f1 = 8000;
     duration = 0.01;
     window = ceil(fs * duration);
     

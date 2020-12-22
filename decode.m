@@ -37,7 +37,7 @@ function str = decode(signal, preamble_code)
         %corr = abs(corr(1,2));
         corr = center_corr(preamble_prefix, signal, preamble_prefix_length, i, available_len);
         is_match = 0;
-        if corr > 0.65
+        if corr > 0.5
             cnt = cnt+1;
             start_i = max(1, i-bit_length/2);
             end_i = min(i+bit_length/2, available_len);
@@ -55,10 +55,10 @@ function str = decode(signal, preamble_code)
                 end
             end
             i = original_i;
-            if max_corr > 0.68
+            if max_corr > 0.6
                 whole_corr = corrcoef(preamble_standard, signal(max_i : max_i+preamble_length-1));
                 whole_corr = abs(whole_corr(1,2));
-                if whole_corr > 0.65
+                if whole_corr > 0.6
                     is_match = 1;
                     i = max_i;
                 end

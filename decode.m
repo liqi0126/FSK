@@ -80,8 +80,9 @@ function str = decode(signal, preamble_code)
                     nonzero = 1;
                     for j = 1 : temp_code_len
                         if temp_code(j) == -1
-                            nonzero = 0;
-                            break;
+%                             nonzero = 0;
+%                             break;
+                            temp_code(j)=0;
                         end
                     end
                     if nonzero == 1

@@ -24,10 +24,10 @@ function start_pos = position(signal, preamble_signal, preamble_length, f0, f1)
                     start_pos = j;
                 end
             end
-            plot(corrs);
+%             plot(corrs);
             return
         end
         i = i + 1;
     end
-    plot(corrs);
+%     plot(corrs);
 end

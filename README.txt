@@ -1,0 +1,1 @@
+运行Matlab 2019b以上的版本，打开app.mlapp文件，这时候会跳转到Matlab App Designer工具中，点击上方工具栏的“运行”，即可运行程序。
